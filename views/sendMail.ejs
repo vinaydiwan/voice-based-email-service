@@ -1,0 +1,185 @@
+<% layout("layouts/boilerPlate2") -%>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/dashboard/<%= user.username %>">Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" aria-current="page" href="/dashboard/<%= user.username %>/compose">Compose</a>
+                    <a class="nav-link" href="#">Inbox</a>
+                    <a class="nav-link" href="/dashboard/<%= user.username %>/profile">Profile</a>
+                    <a class="nav-link" href="/login">logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <%- include('./layouts/flash') %> 
+        <div class="row justify-content-center">
+            <div class="card text-center col-10 col-md-6 col-xl-4 mt-3">
+                <div class="card-header">
+                    <h5 class="card-title">Compose</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/dashboard/compose/<%= user.username %> " id="form" method="post" novalidate>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" required id="from" name="from" placeholder="From" disabled
+                                value="<%= user.email %> ">
+                            <label for="from">From</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" required id="to" name="to" placeholder="To">
+                            <label for="to">To</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" required id="subject" name="subject"
+                                placeholder="Subject">
+                            <label for="subject">Subject</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" required id="text" name="text" placeholder="text">
+                            <label for="text">Text</label>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary mt-3" id="composebtn">compose</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        const speechRecognition = window.webkitSpeechRecognition
+        const tts = window.speechSynthesis;
+        const recognition = new speechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        const to = document.getElementById("to")
+        const subject = document.getElementById("subject")
+        const text = document.getElementById("text")
+
+        document.onmousedown = click
+        function click(event) {
+            if (event.button === 2) {
+                window.location.reload()
+            }
+            if (event.button === 1) {
+                window.location = "/"
+            }
+        }
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('#form')
+
+            // Loop over them and prevent submission
+            Array.from(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+        function submitform() {
+            document.getElementById("form").submit()
+        }
+
+        let tospeak;
+        let stage = 1;
+
+        setTimeout(() => {
+            communicate(stage);
+        }, 1000)
+
+        function communicate(s) {
+            if (s === 1) {
+                speak("compose mail to? ")
+            } else if (s === 2) {
+                speak("subject body? ")
+            } else if (s === 3) {
+                speak("text body? ")
+            } else if (s === 4) {
+                readinputs()
+                setTimeout(() => {
+                    speak("would you like to send? say yes or no.", 4000)
+                }, 50000);
+            }
+        }
+        function readinputs() {
+            getvoice("check your credentials.")
+            getvoice("To. ")
+            getvoicebychar(to.value)
+            getvoice("subject body. " + subject.value)
+            getvoice("text body. " + text.value)
+        }
+        function getvoice(str) {
+            tospeak = new SpeechSynthesisUtterance(str);
+            tospeak.voice = tts.getVoices()[2]
+            tospeak.rate = 0.7
+            tts.speak(tospeak)
+        }
+        function getvoicebychar(str) {
+            for (let i = 0; i < str.length; i++) {
+                tospeak = new SpeechSynthesisUtterance(str[i]);
+                tospeak.voice = tts.getVoices()[2]
+                tospeak.rate = 1.2
+                tts.speak(tospeak)
+            }
+        }
+        function speak(str, delay = 3000) {
+            getvoice(str + " speak");
+            setTimeout(() => {
+                recognition.start();
+            }, delay)
+        }
+
+        recognition.onstart = function () { }
+        recognition.onresult = function (e) {
+            let content = ""
+            let str = ""
+            for (let i = e.resultIndex; i < e.results.length; i++) {
+                content += e.results[i][0].transcript;
+            }
+            console.log(content)
+            editform(content.toLowerCase())
+        }
+        function editform(str) {
+            if (stage === 1) {
+                to.value = str.replace("at the rate", "@").replace("at", "@").replace(/\s+/g, '')
+            } else if (stage === 2) {
+                subject.value = str
+            } else if (stage === 3) {
+                text.value = str
+            } else if (stage === 4) {
+                if (str === "yes") {
+                    submitform()
+                }
+                else if (str === "no") {
+                    to.value = ""
+                    subject.value = ""
+                    text.value = ""
+                    communicate(1)
+                    stage = 1
+                }
+            }
+            communicate(++stage)
+        }
+        recognition.onspeechend = function () {
+            recognition.stop();
+        }
+        recognition.onerror = function (e) {
+            console.log("error")
+        }
+
+    </script>

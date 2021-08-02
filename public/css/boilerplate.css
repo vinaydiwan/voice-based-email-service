@@ -1,0 +1,18 @@
+body {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-image: url('../images/bgimage.jpg');
+    background-position: center;
+    font-family: 'Roboto', sans-serif;
+}
+.home{
+    color: whitesmoke;
+}
+.footer{
+    background-color: #171717;
+    color: aqua;
+}
+footer p{
+    margin: 5px;
+}

@@ -1,0 +1,50 @@
+<% layout("layouts/boilerplate") -%>
+    <div class="container">
+        <%- include('./layouts/flash') %> 
+        <div class="row justify-content-center">
+            <div class="card text-center col-10 col-md-6 col-xl-4 mt-3">
+                <div class="card-header">
+                    <h5 class="card-title">SIGN UP</h5>
+                </div>
+                <div class="card-body">
+                    <form id="form" action="/login" method="post" class="need-validate" novalidate>
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" required id="fname" name="fname" placeholder="First Name*">
+                            <label for="fname">First Name*</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" id="lname"name="lname" placeholder="Last Name*" required>
+                            <label for="lname">Last Name*</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="name@example.com*" required>
+                            <label for="email">Email address*</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="password" class="form-control" id="epass" name="epass"
+                                placeholder="Email Password*" required>
+                            <label for="epass">Email Password*</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="tel" class="form-control" required id="no" name="no" placeholder="Phone Number*">
+                            <label for="no">Phone Number*</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" id="username" required name="username"
+                                placeholder="User Name*">
+                            <label for="username">User Name*</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="password" class="form-control" required id="pass" name="pass" placeholder="Password*">
+                            <label for="pass">Password*</label>
+                        </div>
+                        <div>
+                            <button id="register" class="btn btn-primary mt-2">Sign Up</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <script src="javascript/register.js"></script>
