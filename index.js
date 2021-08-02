@@ -9,6 +9,9 @@ const dashboardRoutes = require('./routes/dashboardRoutes')
 const basicRoutes = require('./routes/basicRoutes')
 const session = require('express-session')
 const flash = require('connect-flash')
+const passport = require('passport')
+const localStrategy = require('passport-local')
+const User = require("./models/users")
 
 // connecting server to database
 mongoose.connect('mongodb://localhost/VoiceBasedEmail', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -35,7 +38,16 @@ app.use(session({
     }
 }))
 app.use(flash())
+
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new localStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
+
 app.use((req,res,next)=>{
+    res.locals.currentUser = req.user
     res.locals.success =  req.flash('success')
     res.locals.error =  req.flash('error')
     next()

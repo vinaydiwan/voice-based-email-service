@@ -1,55 +1,35 @@
 <% layout("layouts/boilerPlate2") -%>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/dashboard/<%= user.username %>">Dashboard</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link" aria-current="page" href="/dashboard/<%= user.username %>/compose">Compose</a>
-                    <a class="nav-link" href="#">Inbox</a>
-                    <a class="nav-link" href="/dashboard/<%= user.username %>/profile">Profile</a>
-                    <a class="nav-link" href="/login">logout</a>
-                </div>
+    <div class="row justify-content-center">
+        <div class="card text-center col-10 col-md-6 col-xl-4 mt-3">
+            <div class="card-header">
+                <h5 class="card-title">Compose</h5>
             </div>
-        </div>
-    </nav>
-    <div class="container">
-        <%- include('./layouts/flash') %> 
-        <div class="row justify-content-center">
-            <div class="card text-center col-10 col-md-6 col-xl-4 mt-3">
-                <div class="card-header">
-                    <h5 class="card-title">Compose</h5>
-                </div>
-                <div class="card-body">
-                    <form action="/dashboard/compose/<%= user.username %> " id="form" method="post" novalidate>
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" required id="from" name="from" placeholder="From" disabled
-                                value="<%= user.email %> ">
-                            <label for="from">From</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" required id="to" name="to" placeholder="To">
-                            <label for="to">To</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" required id="subject" name="subject"
-                                placeholder="Subject">
-                            <label for="subject">Subject</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" required id="text" name="text" placeholder="text">
-                            <label for="text">Text</label>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary mt-3" id="composebtn">compose</button>
-                        </div>
-                    </form>
-                </div>
+            <div class="card-body">
+                <form action="/dashboard/compose/<%= user.username %> " id="form" method="post" novalidate>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" required id="from" name="from" placeholder="From"
+                            disabled value="<%= user.email %> ">
+                        <label for="from">From</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" required id="to" name="to" placeholder="To">
+                        <label for="to">To</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" required id="subject" name="subject"
+                            placeholder="Subject">
+                        <label for="subject">Subject</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" required id="text" name="text" placeholder="text">
+                        <label for="text">Text</label>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary mt-3" id="composebtn">compose</button>
+                    </div>
+                </form>
+            </div>
 
-            </div>
         </div>
     </div>
     <script>
@@ -72,25 +52,7 @@
                 window.location = "/"
             }
         }
-        (function () {
-            'use strict'
 
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll('#form')
-
-            // Loop over them and prevent submission
-            Array.from(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
         function submitform() {
             document.getElementById("form").submit()
         }

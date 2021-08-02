@@ -1,55 +1,40 @@
 <% layout("layouts/boilerPlate2") -%>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/dashboard/<%= user.username %>">Dashboard</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link" aria-current="page" href="/dashboard/<%= user.username %>/compose">Compose</a>
-          <a class="nav-link" href="#">Inbox</a>
-          <a class="nav-link" href="/dashboard/<%= user.username %>/profile">Profile</a>
-          <a class="nav-link" href="/login">logout</a>
-        </div>
+  <div class="row justify-content-center">
+    <div class="card text-center col-10 col-md-6 col-xl-4 mt-3">
+      <div class="card-header">
+        <h5 class="card-title">Profile</h5>
       </div>
-    </div>
-  </nav>
-
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="card text-center col-10 col-md-6 col-xl-4 mt-3">
-        <div class="card-header">
-          <h5 class="card-title">Profile</h5>
-        </div>
-        <div class="card-body">
-          <form id="form">
-            <div class="form-floating mb-2">
-              <input type="text" class="form-control" value="<%= user.fname %> " id="fname" name="fname" disabled placeholder="First Name">
-              <label for="fname">First Name</label>
-            </div>
-            <div class="form-floating mb-2">
-              <input type="text" class="form-control" value="<%= user.lname %> " id="lname" name="lname" disabled placeholder="Last Name">
-              <label for="lname">Last Name</label>
-            </div>
-            <div class="form-floating mb-2">
-              <input type="email" class="form-control" value="<%= user.email %> "id="email" name="email" disabled placeholder="name@example.com">
-              <label for="email">Email address</label>
-            </div>
-            <div class="form-floating mb-2">
-              <input type="tel" class="form-control" value="<%= user.no %> " id="no" name="no" disabled placeholder="Phone Number">
-              <label for="no">Phone Number</label>
-            </div>
-            <div class="form-floating mb-2">
-              <input type="text" class="form-control" value="<%= user.username %> " id="username" disabled name="username" placeholder="User Name">
-              <label for="username">User Name</label>
-            </div>
-            <div>
-              <a id="register" class="btn btn-warning mt-2" href="/dashboard/<%= user.username %>/profile/edit">Edit Profile</a>
-            </div>
-          </form>
-        </div>
-
+      <div class="card-body">
+        <form id="form">
+          <div class="form-floating mb-2">
+            <input type="text" class="form-control" value="<%= user.fname %> " id="fname" name="fname" disabled
+              placeholder="First Name">
+            <label for="fname">First Name</label>
+          </div>
+          <div class="form-floating mb-2">
+            <input type="text" class="form-control" value="<%= user.lname %> " id="lname" name="lname" disabled
+              placeholder="Last Name">
+            <label for="lname">Last Name</label>
+          </div>
+          <div class="form-floating mb-2">
+            <input type="email" class="form-control" value="<%= user.email %> " id="email" name="email" disabled
+              placeholder="name@example.com">
+            <label for="email">Email address</label>
+          </div>
+          <div class="form-floating mb-2">
+            <input type="tel" class="form-control" value="<%= user.no %> " id="no" name="no" disabled
+              placeholder="Phone Number">
+            <label for="no">Phone Number</label>
+          </div>
+          <div class="form-floating mb-2">
+            <input type="text" class="form-control" value="<%= user.username %> " id="username" disabled name="username"
+              placeholder="User Name">
+            <label for="username">User Name</label>
+          </div>
+          <div>
+            <a id="register" class="btn btn-warning mt-2" href="/dashboard/<%= user.username %>/profile/edit">Edit
+              Profile</a>
+          </div>
+        </form>
       </div>
     </div>

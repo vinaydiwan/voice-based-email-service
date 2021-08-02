@@ -1,4 +1,4 @@
-require('../../middleware/validateform')
+
 const speechRecognition = window.webkitSpeechRecognition
 const tts = window.speechSynthesis;
 const recognition = new speechRecognition();
