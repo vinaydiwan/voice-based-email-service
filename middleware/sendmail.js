@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer")
 const AppError = require("../utils/appError")
-module.exports.sendmail=(user, body)=> {
+module.exports.sendmail = (user, body) => {
     let transport = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -16,11 +16,10 @@ module.exports.sendmail=(user, body)=> {
     }
     transport.sendMail(mailOptions, (err, info) => {
         if (err) {
-            throw new AppError("Username and Password not accepted", 400)
+            return false;
         }
         else {
-            console.log("sent")
-            return;
+            return true;
         }
     })
 }

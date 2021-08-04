@@ -6,30 +6,39 @@ const { isLoggedIn } = require("../middleware/isLoggedIn")
 const { sendmail } = require("../middleware/sendmail")
 
 route.get("/:id", isLoggedIn, CatchAsync(async (req, res, next) => {
-   const user = await User.findOne({ username: req.params.id })
+    const user = await User.findOne({ username: req.params.id })
     res.render("dashboard", { user })
 }))
-route.get("/:id/compose", isLoggedIn, CatchAsync(async (req, res) => {
-    const user = await User.findOne({ username: req.params.id })
-    res.render("sendMail", { user })
-}))
+
+route.route("/:id/compose")
+    .get(isLoggedIn, CatchAsync(async (req, res) => {
+        const user = await User.findOne({ username: req.params.id })
+        res.render("sendMail", { user })
+    }))
+    .post(isLoggedIn, CatchAsync(async (req, res) => {
+        const user = await User.findOne({ username: req.params.id })
+        if (sendmail(user, req.body)) {
+            req.flash("success", "Mail sent successfully!")
+        }
+        else {
+            req.flash("error", "Email or Password is incorrect!")
+        }
+        res.redirect(`/dashboard/${user.username}/compose`)
+    }))
+
 route.get("/:id/profile", isLoggedIn, CatchAsync(async (req, res) => {
     const user = await User.findOne({ username: req.params.id })
     res.render("profile", { user })
 }))
-route.get("/:id/profile/edit", isLoggedIn, CatchAsync(async (req, res) => {
-    const user = await User.findOne({ username: req.params.id })
-    res.render("editprofile", { user })
-}))
-route.post("/:id/profile/edit", isLoggedIn, CatchAsync(async (req, res) => {
-    const user = await User.updateOne({ username: req.params.id }, req.body)
-    res.redirect(`/dashboard/${username}/profile`)
-}))
-route.post("/compose/:id", isLoggedIn, CatchAsync(async (req, res) => {
-    const user = await User.findOne({ username: req.params.id })
-    req.flash("success", "Mail sent successfully")
-    await sendmail(user, req.body)
-    res.redirect(`/dashboard/${user.username}/compose`)
-}))
+
+route.route("/:id/profile/edit")
+    .get(isLoggedIn, CatchAsync(async (req, res) => {
+        const user = await User.findOne({ username: req.params.id })
+        res.render("editprofile", { user })
+    }))
+    .post(isLoggedIn, CatchAsync(async (req, res) => {
+        const user = await User.updateOne({ username: req.params.id }, req.body)
+        res.redirect(`/dashboard/${username}/profile`)
+    }))
 
 module.exports = route

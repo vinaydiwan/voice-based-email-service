@@ -12,9 +12,11 @@ const flash = require('connect-flash')
 const passport = require('passport')
 const localStrategy = require('passport-local')
 const User = require("./models/users")
+const mongoSanitize = require("express-mongo-sanitize")
+const helmet = require("helmet")
 
 // connecting server to database
-mongoose.connect('mongodb://localhost/VoiceBasedEmail', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost/VoiceBasedEmail', { useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -27,7 +29,9 @@ app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
 app.engine("ejs", ejsMate)
 app.use(express.urlencoded({ extended: true }))
+app.use(mongoSanitize())
 app.use(session({
+    name: "_gla",
     secret : "asjbdkdba",
     resave : false,
     saveUninitialized : true,
@@ -35,15 +39,19 @@ app.use(session({
         maxAge : 1000*60*60*24*7,
         expires : Date.now()+1000*60*60*24*7,
         httpOnly : true,
+        // secure : true, uncomment it for production
     }
 }))
 app.use(flash())
-
+app.use(helmet({
+    contentSecurityPolicy :false,
+}))
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new localStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
+
 
 
 app.use((req,res,next)=>{

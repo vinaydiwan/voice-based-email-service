@@ -5,7 +5,7 @@
                 <h5 class="card-title">Compose</h5>
             </div>
             <div class="card-body">
-                <form action="/dashboard/compose/<%= user.username %> " id="form" method="post" novalidate>
+                <form action="/dashboard/<%= user.username %>/compose" id="form" method="post" novalidate>
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control" required id="from" name="from" placeholder="From"
                             disabled value="<%= user.email %> ">
