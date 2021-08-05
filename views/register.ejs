@@ -1,13 +1,14 @@
 <% layout("layouts/boilerplate") -%>
+    <div class="container">
         <div class="row justify-content-center">
-            <div class="card text-center col-10 col-md-6 col-xl-4 mt-3">
+            <div class="card text-center col-9 col-sm-6 col-md-4 col-xl-3 m-3">
                 <div class="card-header">
-                    <h5 class="card-title">SIGN UP</h5>
+                    <h5 class="card-title m-2">SIGN UP</h5>
                 </div>
                 <div class="card-body">
                     <form id="form" action="/register" method="post" class="need-validate" novalidate>
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" required id="fname" name="fname"
+                            <input type="text" class="form-control" autofocus required id="fname" name="fname"
                                 placeholder="First Name*">
                             <label for="fname">First Name*</label>
                         </div>
@@ -47,4 +48,5 @@
                     </form>
                 </div>
             </div>
-            <script src="javascript/register.js"></script>
+        </div>
+        <script src="javascript/register.js"></script>

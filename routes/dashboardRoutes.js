@@ -17,13 +17,14 @@ route.route("/:id/compose")
     }))
     .post(isLoggedIn, CatchAsync(async (req, res) => {
         const user = await User.findOne({ username: req.params.id })
-        if (sendmail(user, req.body)) {
+        const flag = await sendmail(user, req.body);
+        if (flag) {
             req.flash("success", "Mail sent successfully!")
         }
         else {
             req.flash("error", "Email or Password is incorrect!")
         }
-        res.redirect(`/dashboard/${user.username}/compose`)
+        res.redirect(`/dashboard/${user.username}`)
     }))
 
 route.get("/:id/profile", isLoggedIn, CatchAsync(async (req, res) => {
@@ -37,8 +38,16 @@ route.route("/:id/profile/edit")
         res.render("editprofile", { user })
     }))
     .post(isLoggedIn, CatchAsync(async (req, res) => {
-        const user = await User.updateOne({ username: req.params.id }, req.body)
-        res.redirect(`/dashboard/${username}/profile`)
+        try {
+            const user = await User.findOne({ username: req.params.id })
+            await user.changePassword(req.body.oldpassword, req.body.newpassword,)
+            await user.save()
+            req.flash("success", "Password changed Successfully!")
+            res.redirect(`/dashboard/${req.params.id}/profile`)
+        } catch (err) {
+            req.flash("error", "Incorrect Password!")
+            res.redirect(`/dashboard/${req.params.id}/profile/edit`)
+        }
     }))
 
 module.exports = route

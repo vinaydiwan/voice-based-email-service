@@ -1,12 +1,11 @@
-const speechRecognition = window.webkitSpeechRecognition
+const speechRecognition = window.webkitSpeechRecognition;
 const tts = window.speechSynthesis;
 const recognition = new speechRecognition();
 recognition.continuous = false;
 recognition.interimResults = false;
 
 const username = document.getElementById("username");
-const pass = document.getElementById("pass")
-const loginbtn = document.getElementById("loginbtn")
+const pass = document.getElementById("pass");
 
 // mouse event to reload page and redirect to previous page
 document.onmousedown = click
@@ -18,26 +17,6 @@ function click(event) {
         window.history.back()
     }
 }
-// Example starter JavaScript for disabling form submissions if there are invalid fields
-(function () {
-    'use strict'
-  
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('#form')
-  
-    // Loop over them and prevent submission
-    Array.from(forms)
-      .forEach(function (form) {
-        form.addEventListener('submit', function (event) {
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
-  
-          form.classList.add('was-validated')
-        }, false)
-      })
-  })()
 function submitform() {
     document.getElementById("form").submit();
 }
@@ -55,12 +34,12 @@ function getInputs(s) {
     if (s === 1) {
         communicate("Your user name?",2900)
     } else if (s === 2) {
-        communicate("your password?",2900)
+        communicate("your password?",2700)
     } else if (s === 3) {
         readinputs()
         setTimeout(() => {
-            communicate("would you like to login? say yes or no. ",5700)
-        }, 27000);
+            communicate("would you like to login? say yes or no. ",4900)
+        }, 34000);
     }
 }
 function communicate(str,delay=7000) {
@@ -69,7 +48,6 @@ function communicate(str,delay=7000) {
         recognition.start();
     }, delay)
 }
-
 function getvoice(str) {
     tospeak = new SpeechSynthesisUtterance(str);
     tospeak.voice = tts.getVoices()[2]
@@ -84,7 +62,6 @@ function getvoicebychar(str) {
         tts.speak(tospeak)
     }
 }
-
 function readinputs() {
     getvoice("check your credentials.")
     getvoice("your username. ")
@@ -92,7 +69,6 @@ function readinputs() {
     getvoice("your password. ")
     getvoicebychar(pass.value)
 }
-
 function checkcontent(content) {
     if (content === 'yes' && stage === 3) {
         submitform()
@@ -112,9 +88,8 @@ function login(str) {
     }
     getInputs(++stage)
 }
-recognition.onstart = function () {
 
-}
+recognition.onstart = function () {}
 recognition.onresult = function (e) {
     let content = ""
     for (let i = e.resultIndex; i < e.results.length; i++) {
@@ -123,10 +98,8 @@ recognition.onresult = function (e) {
     str = content.replace("at the rate", "@")
     str = str.replace("at", "@")
     str = str.replace(/\s+/g, '').toLowerCase()
-    console.log(str)
     checkcontent(str)
 }
-
 recognition.onspeechend = function () {
     recognition.stop();
 }

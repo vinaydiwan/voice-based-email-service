@@ -1,18 +1,19 @@
-body {
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-image: url('../images/bgimage.jpg');
-    background-position: center;
-    font-family: 'Roboto', sans-serif;
+h1,h2,h3,h4,h5{
+    font-family: 'Merriweather', serif;
 }
-.home{
-    color: whitesmoke;
+p,label,.btn{
+    font-family: 'Montserrat', sans-serif;
 }
-.footer{
-    background-color: #171717;
-    color: aqua;
+h3{
+    font-weight: 400;
 }
-footer p{
-    margin: 5px;
+h1{
+    font-weight: 300;
+}
+.btn{
+    background-color: #e3f2fd;
+    color: black;
+}
+.flash{
+    width: 70%;
 }

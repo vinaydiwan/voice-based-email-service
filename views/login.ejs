@@ -1,14 +1,15 @@
 <% layout("layouts/boilerplate") -%>
+    <div class="container">
         <div class="row justify-content-center">
-            <div class="card text-center col-10 col-md-6 col-xl-4 mt-3">
+            <div class="card text-center col-9 col-sm-6 col-md-4 col-xl-3 m-3">
                 <div class="card-header">
-                    <h5 class="card-title">SIGN IN</h5>
+                    <h5 class="card-title m-2">SIGN IN</h5>
                 </div>
                 <div class="card-body">
-                    <form action="/login" id="form" method="post" novalidate>
+                    <form action="/login" id="form" method="post" novalidate class="need-validate">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="username" name="username" placeholder="username"
-                                required>
+                            <input type="text" class="form-control" autofocus id="username" name="username"
+                                placeholder="username" required>
                             <label for="username">User Name</label>
                         </div>
                         <div class="form-floating">
@@ -17,7 +18,7 @@
                             <label for="password">Password</label>
                         </div>
                         <div>
-                            <button class="btn btn-primary mt-3" id="loginbtn">Login</button>
+                            <button class="btn btn-primary mt-3" id="loginbtn">Sign In</button>
                         </div>
                     </form>
                 </div>
@@ -26,4 +27,5 @@
                 </div>
             </div>
         </div>
-        <script src="javascript/login.js"></script>
+    </div>
+    <script src="javascript/login.js"></script>

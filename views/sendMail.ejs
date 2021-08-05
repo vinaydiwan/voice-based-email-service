@@ -1,18 +1,18 @@
 <% layout("layouts/boilerPlate2") -%>
     <div class="row justify-content-center">
-        <div class="card text-center col-10 col-md-6 col-xl-4 mt-3">
+        <div class="card text-center col-9 col-sm-6 col-md-4 col-xl-3 m-3">
             <div class="card-header">
-                <h5 class="card-title">Compose</h5>
+                <h5 class="card-title m-2">Compose</h5>
             </div>
             <div class="card-body">
-                <form action="/dashboard/<%= user.username %>/compose" id="form" method="post" novalidate>
+                <form action="/dashboard/<%= user.username %>/compose" class="need-validate" id="form" method="post" novalidate>
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control" required id="from" name="from" placeholder="From"
                             disabled value="<%= user.email %> ">
                         <label for="from">From</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" required id="to" name="to" placeholder="To">
+                        <input type="email" class="form-control" autofocus required id="to" name="to" placeholder="To">
                         <label for="to">To</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -25,7 +25,7 @@
                         <label for="text">Text</label>
                     </div>
                     <div>
-                        <button class="btn btn-primary mt-3" id="composebtn">compose</button>
+                        <button class="btn btn-primary" id="composebtn">compose</button>
                     </div>
                 </form>
             </div>
@@ -113,7 +113,6 @@
             for (let i = e.resultIndex; i < e.results.length; i++) {
                 content += e.results[i][0].transcript;
             }
-            console.log(content)
             editform(content.toLowerCase())
         }
         function editform(str) {
@@ -141,7 +140,7 @@
             recognition.stop();
         }
         recognition.onerror = function (e) {
-            console.log("error")
+            window.location.reload()
         }
 
     </script>

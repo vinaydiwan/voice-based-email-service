@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg sticky-top navbar-light" style="background-color: #e3f2fd;">
   <div class="container-fluid">
       <a class="navbar-brand" href="/">VBEmail </a>
       
@@ -9,10 +9,10 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto">
           <% if(!currentUser){ %>
-            <a class="nav-link" href="/login">Sign in</a>
-            <a class="nav-link" href="register">Sign up</a>
+            <a class="nav-link " href="/login">Sign in</a>
+            <a class="nav-link " href="register">Sign up</a>
             <% }else{ %>
-              <a class="nav-link" href="/logout">Sign out</a>
+              <a class="nav-link " href="/logout">Sign out</a>
               <% } %>
         </div>
       </div>

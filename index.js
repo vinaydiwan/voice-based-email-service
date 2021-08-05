@@ -16,7 +16,7 @@ const mongoSanitize = require("express-mongo-sanitize")
 const helmet = require("helmet")
 
 // connecting server to database
-mongoose.connect('mongodb://localhost/VoiceBasedEmail', { useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost/VoiceBasedEmail', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -32,19 +32,19 @@ app.use(express.urlencoded({ extended: true }))
 app.use(mongoSanitize())
 app.use(session({
     name: "_gla",
-    secret : "asjbdkdba",
-    resave : false,
-    saveUninitialized : true,
+    secret: "asjbdkdba",
+    resave: false,
+    saveUninitialized: true,
     cookie: {
-        maxAge : 1000*60*60*24*7,
-        expires : Date.now()+1000*60*60*24*7,
-        httpOnly : true,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true,
         // secure : true, uncomment it for production
     }
 }))
 app.use(flash())
 app.use(helmet({
-    contentSecurityPolicy :false,
+    contentSecurityPolicy: false,
 }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -52,12 +52,10 @@ passport.use(new localStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
-
-
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     res.locals.currentUser = req.user
-    res.locals.success =  req.flash('success')
-    res.locals.error =  req.flash('error')
+    res.locals.success = req.flash('success')
+    res.locals.error = req.flash('error')
     next()
 })
 
@@ -69,7 +67,7 @@ app.use('*', (req, res, next) => {
 })
 app.use((err, req, res, next) => {
     const { status = 500, message = "Something went Wrong!" } = err
-    res.status(status).render("error", { err })
+    return res.render("error", { err })
 })
 app.listen(4000, () => {
     console.log("server on port 4000")

@@ -33,7 +33,7 @@ route.route("/register")
             req.login(newUser, (err) => {
                 if (err) return next(err)
                 req.flash("success", "You Have successfully registered.")
-                res.redirect(`/dashboard/${req.user.username}`)
+                return res.redirect(`/dashboard/${req.user.username}`)
             })
         } catch (error) {
             if (error.code === 11000) {
@@ -42,7 +42,7 @@ route.route("/register")
             else {
                 req.flash("error", "Username already taken")
             }
-            res.redirect("/register")
+            return res.redirect("/register")
         }
     }))
 
