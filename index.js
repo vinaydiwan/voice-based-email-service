@@ -18,7 +18,6 @@ const localStrategy = require('passport-local')
 const User = require("./models/users")
 const mongoSanitize = require("express-mongo-sanitize")
 const helmet = require("helmet")
-const MongoStore = require('connect-mongo') 
 
 // connecting server to database
 //const dbURL = process.env.DB_URL;
