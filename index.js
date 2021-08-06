@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config()
+}
+
 // import required packages
 const express = require("express")
 const app = express()
@@ -14,9 +18,12 @@ const localStrategy = require('passport-local')
 const User = require("./models/users")
 const mongoSanitize = require("express-mongo-sanitize")
 const helmet = require("helmet")
+const MongoStore = require('connect-mongo') 
 
 // connecting server to database
-mongoose.connect('mongodb://localhost/VoiceBasedEmail', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+//const dbURL = process.env.DB_URL;
+const dbURL = process.env.DB_URL || 'mongodb://localhost/VoiceBasedEmail'
+mongoose.connect(dbURL, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -30,18 +37,21 @@ app.set("views", path.join(__dirname, "views"))
 app.engine("ejs", ejsMate)
 app.use(express.urlencoded({ extended: true }))
 app.use(mongoSanitize())
+
+const secret = process.env.SECRET || "asjbdkdba";
 app.use(session({
     name: "_gla",
-    secret: "asjbdkdba",
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
         httpOnly: true,
-        // secure : true, uncomment it for production
+        secure : true,
     }
 }))
+
 app.use(flash())
 app.use(helmet({
     contentSecurityPolicy: false,
@@ -69,6 +79,7 @@ app.use((err, req, res, next) => {
     const { status = 500, message = "Something went Wrong!" } = err
     return res.render("error", { err })
 })
-app.listen(4000, () => {
-    console.log("server on port 4000")
+const port = process.env.PORT || 4000
+app.listen(port, () => {
+    console.log("server on port ",port)
 })
