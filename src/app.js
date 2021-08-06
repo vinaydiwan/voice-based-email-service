@@ -21,19 +21,22 @@ const helmet = require("helmet")
 const MongoStore = require('connect-mongo')
 
 // connecting server to database
-//const dbURL = process.env.DB_URL;
 const dbURL = process.env.DB_URL
-mongoose.connect(dbURL, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-    console.log("database connected")
-});
+mongoose.connect(dbURL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+}).then(()=>{
+    console.log("db connected")
+}).catch((err)=>{
+    console.log("error in connection")
+})
 
 // tools required to set or use commands
-app.use(express.static(path.join(__dirname, "public")))
+app.use(express.static(path.join(__dirname, "../public")))
 app.set("view engine", "ejs")
-app.set("views", path.join(__dirname, "views"))
+app.set("views", path.join(__dirname, "../views"))
 app.engine("ejs", ejsMate)
 app.use(express.urlencoded({ extended: true }))
 app.use(mongoSanitize())
@@ -43,17 +46,15 @@ app.use(session({
     name: "_gla",
     secret,
     store: MongoStore.create({
-        mongoUrl: dbURL,
-        secret,
-        touchAfter: 24 * 3600,
+        mongoUrl: process.env.DB_URL,
     }),
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
         httpOnly: true,
-        secure: true,
+        // secure: true,
     }
 }))
 
@@ -82,7 +83,7 @@ app.use('*', (req, res, next) => {
 })
 app.use((err, req, res, next) => {
     const { status = 500, message = "Something went Wrong!" } = err
-    return res.render("error", { err })
+    res.status(status).render("error", { err })
 })
 const port = process.env.PORT || 4000
 app.listen(port, () => {
